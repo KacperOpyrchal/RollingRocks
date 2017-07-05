@@ -3,6 +3,8 @@ package pl.koorki.rollingrocks;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,19 +16,39 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 public class Obstacle extends Actor {
 
-    private Texture texture;
+    private Sprite obstacle;
+    private Sprite gap;
+    private float speed;
 
 
-    public Obstacle (int x, int y, Texture texture) {
+    public Obstacle (int x, int y, float speed, Sprite obstacle, Sprite gap) {
+        this.obstacle = obstacle;
+        this.gap = gap;
+        super.setBounds(0, y, obstacle.getWidth(), obstacle.getHeight());
         setPosition(x, y);
-        setBounds(x, y, texture.getWidth(), texture.getHeight());
-        setTouchable(Touchable.disabled);
-        this.texture = texture;
+        this.speed = speed;
     }
 
+    @Override
+    public void act(float delta) {
+        gap.translateX(delta * speed);
+
+        if (gap.getX() <= 0)
+            speed = speed > 0 ? speed : -speed;
+        else if (gap.getX() + gap.getWidth() >= RollingRocks.WORLD_WIDTH)
+            speed = speed < 0 ? speed : -speed;
+    }
+
+    @Override
+    public void setPosition(float x, float y) {
+        super.setPosition(0, y);
+        obstacle.setPosition(0, y);
+        gap.setPosition(x, y);
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, getX(), getY());
+        obstacle.draw(batch);
+        gap.draw(batch);
     }
 }
