@@ -1,14 +1,8 @@
 package pl.koorki.rollingrocks;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 /**
  * Created by marcin on 05.07.17.
@@ -18,10 +12,10 @@ public class Obstacle extends Actor {
 
     private Sprite obstacle;
     private Sprite gap;
-    private float speed;
+    private int speed;
 
 
-    public Obstacle (int x, int y, float speed, Sprite obstacle, Sprite gap) {
+    public Obstacle (int x, int y, int speed, Sprite obstacle, Sprite gap) {
         this.obstacle = obstacle;
         this.gap = gap;
         super.setBounds(0, y, obstacle.getWidth(), obstacle.getHeight());
@@ -50,5 +44,9 @@ public class Obstacle extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         obstacle.draw(batch);
         gap.draw(batch);
+    }
+
+    public void dispose() {
+
     }
 }

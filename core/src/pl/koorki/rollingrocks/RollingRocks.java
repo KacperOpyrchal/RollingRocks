@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class RollingRocks extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
 	Stage stage;
 
 	static int WIDTH = 480;
@@ -34,21 +33,21 @@ public class RollingRocks extends ApplicationAdapter {
 	public void create () {
 		ASPECT_RATIO = (float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth();
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
 		camera = new OrthographicCamera(WIDTH, WIDTH * ASPECT_RATIO);
 		camera.position.set(WIDTH / 2, HEIGHT / 2, 0);
 		viewport = new ExtendViewport(WIDTH, HEIGHT, camera);
 		stage = new Stage(viewport, batch);
 		WORLD_WIDTH = (int) viewport.getWorldWidth();
 		WORLD_HEIGHT = (int) viewport.getWorldHeight();
-		Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-		pixmap.setColor(Color.GREEN);
-		pixmap.fill();
-		Texture texture = new Texture(pixmap);
-		Sprite obstacle = new Sprite(texture, WORLD_WIDTH, 50);
-		Sprite gap = new Sprite(img);
-		Obstacle obs = new Obstacle((int)(WORLD_WIDTH / 2.0), (int)(WORLD_HEIGHT / 2.0), 100, obstacle, gap);
-		stage.addActor(obs);
+
+		ObstacleGenerator generator = new ObstacleGenerator();
+		Obstacle obs1 = generator.getNewObstacle(WORLD_HEIGHT / 4);
+		Obstacle obs2 = generator.getNewObstacle(WORLD_HEIGHT / 2);
+		Obstacle obs3 = generator.getNewObstacle(3 * WORLD_HEIGHT / 4);
+
+		stage.addActor(obs1);
+		stage.addActor(obs2);
+		stage.addActor(obs3);
 	}
 
 	@Override
@@ -66,7 +65,6 @@ public class RollingRocks extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 
 		stage.dispose();
 	}
