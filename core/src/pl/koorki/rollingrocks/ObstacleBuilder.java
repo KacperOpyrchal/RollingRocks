@@ -2,8 +2,6 @@ package pl.koorki.rollingrocks;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-import jdk.nashorn.internal.ir.SplitReturn;
-
 /**
  * Created by marcin on 05.07.17.
  */

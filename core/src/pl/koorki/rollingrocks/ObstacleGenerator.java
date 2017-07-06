@@ -1,5 +1,6 @@
 package pl.koorki.rollingrocks;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,16 +17,16 @@ public class ObstacleGenerator {
     private ObstacleBuilder builder;
     private Random random = new Random();
     private int width = RollingRocks.WORLD_WIDTH;
-    private int height = 25;
+    private int height = 32;
     private int colors = 4;
 
     private int minSpeed = 50;
     private int rndSpeed = 90;
 
-    private int minGapWidth = 80;
-    private int rndGapWidth = 90;
+    private int minGapWidth = 100;
+    private int rndGapWidth = 100;
 
-    private Sprite[] obstacles = new Sprite[colors];
+    private Texture[] textures = new Texture[colors];
     private Pixmap[] pixmaps = new Pixmap[colors];
 
     private Texture gapTexture;
@@ -34,7 +35,7 @@ public class ObstacleGenerator {
 
     public ObstacleGenerator() {
         for (int i = 0; i < colors; ++i)
-            obstacles[i] = makeSprite(pixmaps[i], i);
+            textures[i] = makeTexture(pixmaps[i], i);
 
         gapTexture = makeGapTexture(gapPixmap);
 
@@ -50,7 +51,7 @@ public class ObstacleGenerator {
                 .setX(x)
                 .setY(y)
                 .setSpeed(randSpeed())
-                .setObstacle(randSprite())
+                .setObstacle(makeSprite())
                 .setGap(gap)
                 .build();
 
@@ -58,7 +59,7 @@ public class ObstacleGenerator {
     }
 
 
-    private Sprite makeSprite(Pixmap pixmap, int number) {
+    private Texture makeTexture(Pixmap pixmap, int number) {
         pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 
         switch (number) {
@@ -69,7 +70,7 @@ public class ObstacleGenerator {
         }
         pixmap.fill();
 
-        return new Sprite(new Texture(pixmap), width, height);
+        return new Texture(pixmap);
     }
 
 
@@ -89,23 +90,21 @@ public class ObstacleGenerator {
     }
 
 
-    private Sprite randSprite() {
+    private Sprite makeSprite() {
         int number = random.nextInt(colors);
-
-        return obstacles[number];
+        return new Sprite(textures[number], width, height);
     }
 
 
     private Sprite makeGapSprite() {
         int gapWidth = random.nextInt(rndGapWidth) + minGapWidth;
-
         return new Sprite(gapTexture, gapWidth, height);
     }
 
 
     public void dispose() {
-        for (Sprite sprite : obstacles)
-            sprite.getTexture().dispose();
+        for (Texture texture : textures)
+            texture.dispose();
 
         for (Pixmap pixmap : pixmaps)
             pixmap.dispose();
