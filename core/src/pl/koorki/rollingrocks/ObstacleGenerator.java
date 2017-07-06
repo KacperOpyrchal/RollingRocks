@@ -17,13 +17,13 @@ public class ObstacleGenerator {
     private ObstacleBuilder builder;
     private Random random = new Random();
     private int width = RollingRocks.WORLD_WIDTH;
-    private int height = 32;
+    private int height = 30;
     private int colors = 4;
 
     private int minSpeed = 50;
     private int rndSpeed = 90;
 
-    private int minGapWidth = 100;
+    private int minGapWidth = 200;
     private int rndGapWidth = 100;
 
     private Texture[] textures = new Texture[colors];

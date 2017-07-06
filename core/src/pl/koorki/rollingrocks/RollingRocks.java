@@ -14,8 +14,8 @@ public class RollingRocks extends ApplicationAdapter {
 	SpriteBatch batch;
 	Stage stage;
 
-	static int WIDTH = 480;
-	static int HEIGHT = 800;
+	static int WIDTH = 720;
+	static int HEIGHT = 1280;
 	static float ASPECT_RATIO;
 	public static int WORLD_WIDTH;
 	public static int WORLD_HEIGHT;
@@ -24,6 +24,8 @@ public class RollingRocks extends ApplicationAdapter {
 
 	OrthographicCamera camera;
 	ExtendViewport viewport;
+
+	int xLeftTexture;
 
 	
 	@Override
@@ -36,19 +38,33 @@ public class RollingRocks extends ApplicationAdapter {
 		stage = new Stage(viewport, batch);
 		WORLD_WIDTH = (int) viewport.getWorldWidth();
 		WORLD_HEIGHT = (int) viewport.getWorldHeight();
+		Gdx.input.setInputProcessor(stage);
 
 		ObstacleGenerator generator = new ObstacleGenerator();
 		Obstacle obs1 = generator.getNewObstacle(WORLD_HEIGHT / 4);
 		Obstacle obs2 = generator.getNewObstacle(WORLD_HEIGHT / 2);
 		Obstacle obs3 = generator.getNewObstacle(3 * WORLD_HEIGHT / 4);
 
-		texture = new Texture("SafeSpot.png");
+		Player player = new Player(WORLD_WIDTH / 2, WORLD_HEIGHT / 8, new Texture("ball.png"));
+
+		stage.addActor(player);
+
+		texture = new Texture("safe_spot.png");
+		SafeSpot spot = new SafeSpot(0, 10, texture);
+		SafeSpot spot1 = new SafeSpot(0, 1000, texture);
+		SafeSpot spot2 = new SafeSpot(0, 766, texture);
+		xLeftTexture = (WORLD_WIDTH - texture.getWidth()) / 2;
+
 
 
 		Group group = new Group();
 		group.addActor(obs1);
 		group.addActor(obs2);
 		group.addActor(obs3);
+
+		stage.addActor(spot);
+		stage.addActor(spot1);
+		stage.addActor(spot2);
 
 
 		stage.addActor(group);
@@ -59,12 +75,9 @@ public class RollingRocks extends ApplicationAdapter {
 		stage.act(Gdx.graphics.getDeltaTime());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
+		stage.getCamera().update();
+		batch.setProjectionMatrix(stage.getCamera().combined);
 
-		batch.begin();
-		batch.draw(texture, 0, WORLD_HEIGHT / 8);
-		batch.end();
 
 		stage.draw();
 	}
