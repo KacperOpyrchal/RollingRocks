@@ -2,6 +2,7 @@ package pl.koorki.rollingrocks;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,9 +24,12 @@ public class GameStage extends Stage {
     private LinkedList<Obstacle> toRemove = new LinkedList<Obstacle>();
     private Player player;
 
+    MapGenerator mapGenerator;
+
 
     public GameStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
+        mapGenerator = new MapGenerator();
     }
 
     @Override
@@ -44,7 +48,6 @@ public class GameStage extends Stage {
         getBatch().end();
     }
 
-
     @Override
     public void act() {
         float delta = Gdx.graphics.getDeltaTime();
@@ -61,12 +64,42 @@ public class GameStage extends Stage {
             ++collisionCounter;
             Gdx.app.log("Collision", "" + collisionCounter);
         }
+
+        if(passedObstacle(obstacles.peek())) {
+            Gdx.app.log("Collision", "" + collisionCounter);
+            Obstacle peek = obstacles.peek();
+            Obstacle obstacle = mapGenerator.getObstacle((int) peek.getY(), obstacles.size());
+            addObstacle(obstacle);
+        }
+
     }
+
+
+   public void loadMap() {
+        mapGenerator = new MapGenerator();
+        addPlayer(mapGenerator.addPlayer());
+
+        Obstacle[] array = mapGenerator.generateMap();
+        for (Obstacle obstacle : array)
+            addObstacle(obstacle);
+    }
+
+
+    public boolean passedObstacle(Obstacle obstacle) {
+        boolean passed = player.getY() > obstacle.getY() + obstacle.getHeight();
+
+        if (passed)
+            toRemove.add(obstacles.remove());
+
+        return passed;
+    }
+
 
     public void addObstacle(Obstacle actor) {
         addActor(actor);
         obstacles.add(actor);
     }
+
 
     public void addPlayer(Player actor) {
         addActor(actor);
@@ -74,7 +107,7 @@ public class GameStage extends Stage {
     }
 
 
-    private boolean collisionDetector() {
+    public boolean collisionDetector() {
         boolean collision = collisionWithObstacle(obstacles.peek());
 
         if (collision == true)
