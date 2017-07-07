@@ -18,8 +18,8 @@ public class SafeSpot extends Actor {
         this.texture = texture;
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
+
+    public void draw(Batch batch) {
         batch.draw(texture, getX(), getY());
     }
 

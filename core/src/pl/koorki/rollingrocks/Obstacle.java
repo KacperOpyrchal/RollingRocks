@@ -2,6 +2,7 @@ package pl.koorki.rollingrocks;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
@@ -40,11 +41,22 @@ public class Obstacle extends Actor {
         gap.setPosition(x, y);
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
+
+    public void draw(Batch batch) {
         obstacle.draw(batch);
         gap.draw(batch);
     }
+
+
+    public Rectangle getObstacleBounds() {
+        return obstacle.getBoundingRectangle();
+    }
+
+
+    public Rectangle getGapBounds() {
+        return gap.getBoundingRectangle();
+    }
+
 
     public void dispose() {
 

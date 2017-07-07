@@ -6,14 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class RollingRocks extends ApplicationAdapter {
 	SpriteBatch batch;
-	Stage stage;
+	GameStage stage;
 
 	static int WIDTH = 720;
 	static int HEIGHT = 1280;
@@ -36,7 +33,7 @@ public class RollingRocks extends ApplicationAdapter {
 		camera = new OrthographicCamera(WIDTH, WIDTH * ASPECT_RATIO);
 		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 		viewport = new ExtendViewport(WIDTH, HEIGHT, camera);
-		stage = new Stage(viewport, batch);
+		stage = new GameStage(viewport, batch);
 		WORLD_WIDTH = (int) viewport.getWorldWidth();
 		WORLD_HEIGHT = (int) viewport.getWorldHeight();
 		Gdx.input.setInputProcessor(stage);
@@ -55,29 +52,18 @@ public class RollingRocks extends ApplicationAdapter {
 		xLeftTexture = (WORLD_WIDTH - texture.getWidth()) / 2;
 
 
+		stage.addObstacle(obs1);
+		stage.addObstacle(obs2);
+		stage.addObstacle(obs3);
 
-		Group group = new Group();
-		group.addActor(obs1);
-		group.addActor(obs2);
-		group.addActor(obs3);
+		stage.addPlayer(player);
 
-		stage.addActor(spot);
-		stage.addActor(spot1);
-		stage.addActor(spot2);
-
-		stage.addActor(player);
-
-		stage.addActor(group);
 	}
 
 	@Override
 	public void render () {
-		stage.act(Gdx.graphics.getDeltaTime());
+		stage.act();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		stage.getCamera().update();
-		batch.setProjectionMatrix(stage.getCamera().combined);
-
 
 		stage.draw();
 	}
@@ -85,7 +71,6 @@ public class RollingRocks extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-
 		stage.dispose();
 	}
 }
