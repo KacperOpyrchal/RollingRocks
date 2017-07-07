@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class RollingRocks extends ApplicationAdapter {
@@ -45,9 +46,7 @@ public class RollingRocks extends ApplicationAdapter {
 		Obstacle obs2 = generator.getNewObstacle(WORLD_HEIGHT / 2);
 		Obstacle obs3 = generator.getNewObstacle(3 * WORLD_HEIGHT / 4);
 
-		Player player = new Player(WORLD_WIDTH / 2, WORLD_HEIGHT / 8, new Texture("ball.png"));
-
-		stage.addActor(player);
+		Player player = new Player(WORLD_WIDTH / 2, WORLD_HEIGHT / 6, new Texture("ball.png"));
 
 		texture = new Texture("safe_spot.png");
 		SafeSpot spot = new SafeSpot(0, 10, texture);
@@ -66,6 +65,7 @@ public class RollingRocks extends ApplicationAdapter {
 		stage.addActor(spot1);
 		stage.addActor(spot2);
 
+		stage.addActor(player);
 
 		stage.addActor(group);
 	}
