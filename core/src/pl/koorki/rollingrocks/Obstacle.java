@@ -1,5 +1,6 @@
 package pl.koorki.rollingrocks;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
@@ -24,14 +25,23 @@ public class Obstacle extends Actor {
         this.speed = speed;
     }
 
-    @Override
-    public void act(float delta) {
+
+    public void move(float delta, float ySpeed) {
         gap.translateX(delta * speed);
+
+        moveY(ySpeed);
 
         if (gap.getX() <= 0)
             speed = speed > 0 ? speed : -speed;
         else if (gap.getX() + gap.getWidth() >= RollingRocks.WORLD_WIDTH)
             speed = speed < 0 ? speed : -speed;
+    }
+
+
+    private void moveY(float y) {
+        setY(getY() - y); // i'm not sure if there should be a minus
+        gap.translateY(-y); // here too
+        obstacle.translateY(-y); // ...
     }
 
     @Override

@@ -51,26 +51,27 @@ public class GameStage extends Stage {
     @Override
     public void act() {
         float delta = Gdx.graphics.getDeltaTime();
+        float speed = player.move(delta);
 
         for (Obstacle obstacle : obstacles)
-            obstacle.act(delta);
+            obstacle.move(delta, speed);
 
         for (Obstacle obstacle : toRemove)
-            obstacle.act(delta);
-
-        player.act(delta);
+            obstacle.move(delta, speed);
 
         if(collisionDetector()) {
-            ++collisionCounter;
-            Gdx.app.log("Collision", "" + collisionCounter);
+            //++collisionCounter;
+
         }
 
         if(passedObstacle(obstacles.peek())) {
-            Gdx.app.log("Collision", "" + collisionCounter);
             Obstacle peek = obstacles.peek();
             Obstacle obstacle = mapGenerator.getObstacle((int) peek.getY(), obstacles.size());
             addObstacle(obstacle);
         }
+
+
+        removeObstacle();
 
     }
 
@@ -95,13 +96,18 @@ public class GameStage extends Stage {
     }
 
 
-    public void addObstacle(Obstacle actor) {
+    private void removeObstacle() {
+        if (toRemove.size() > 2)
+            toRemove.removeFirst();
+    }
+
+    private void addObstacle(Obstacle actor) {
         addActor(actor);
         obstacles.add(actor);
     }
 
 
-    public void addPlayer(Player actor) {
+    private void addPlayer(Player actor) {
         addActor(actor);
         player = actor;
     }

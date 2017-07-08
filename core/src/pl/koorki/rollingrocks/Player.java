@@ -29,14 +29,17 @@ public class Player extends Actor {
 
 
 
+
+
     public Player(int x, int y, Texture texture) {
         int radius = texture.getWidth() / 2;
         circle = new Circle(x, y, radius);
-        super.setBounds(x - radius, y - radius, 2 * radius, 2 * radius);
+        super.setBounds(x - circle.radius, y - circle.radius, 2 * circle.radius, 2 * circle.radius);
         this.texture = texture;
         this.sprite = new Sprite(texture);
         setPosition(x, y);
         setTouchable(Touchable.enabled);
+
 
         addListener(new InputListener() {
 
@@ -81,9 +84,9 @@ public class Player extends Actor {
         sprite.draw(batch);
     }
 
-    @Override
-    public void act(float delta) {
-        if (!move) return;
+
+    public float move(float delta) {
+        if (!move) return 0f;
 
         collisionWithFrames();
 
@@ -91,9 +94,16 @@ public class Player extends Actor {
         float y = circle.y;
 
         x += speed.x * delta;
+
+        float speedY = 0;
         y += speed.y * delta;
+        if (y > MapGenerator.yPlayer) {
+            speedY = y - MapGenerator.yPlayer;
+            y = MapGenerator.yPlayer;
+        }
 
         setPosition(x, y);
+        return speedY;
     }
 
 
@@ -113,8 +123,6 @@ public class Player extends Actor {
 
         if (getY() <= 0)
             speed.y = speed.y > 0 ? speed.y : -speed.y;
-        else if (getY() + getHeight() >= RollingRocks.WORLD_HEIGHT)
-            speed.y = speed.y < 0 ? speed.y : -speed.y;
     }
 
 
