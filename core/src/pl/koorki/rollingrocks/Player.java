@@ -29,7 +29,7 @@ public class Player extends Actor {
 
 
     private final float touchBoundsScale = 3.5f;
-    
+
 
 
     public Player(int x, int y, Texture texture) {

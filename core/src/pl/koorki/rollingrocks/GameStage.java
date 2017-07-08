@@ -1,6 +1,7 @@
 package pl.koorki.rollingrocks;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Circle;
@@ -19,9 +20,12 @@ import java.util.Queue;
 public class GameStage extends Stage {
 
     int collisionCounter = 0;
+    int score = 0;
 
     private Queue<Obstacle> obstacles = new ArrayDeque<Obstacle>();
-    private LinkedList<Obstacle> toRemove = new LinkedList<Obstacle>();
+    private LinkedList<Obstacle> ObstaclesToRemove = new LinkedList<Obstacle>();
+    private Queue<Coin> coins = new ArrayDeque<Coin>();
+    private LinkedList<Coin> coinsToRemove = new LinkedList<Coin>();
     private Player player;
 
     MapGenerator mapGenerator;
@@ -41,8 +45,14 @@ public class GameStage extends Stage {
         for (Obstacle obstacle : obstacles)
             obstacle.draw(getBatch());
 
-        for (Obstacle obstacle : toRemove)
+        for (Obstacle obstacle : ObstaclesToRemove)
             obstacle.draw(getBatch());
+
+        for (Coin coin : coins)
+            coin.draw(getBatch());
+
+        for (Coin coin : coinsToRemove)
+            coin.draw(getBatch());
 
         player.draw(getBatch());
         getBatch().end();
@@ -56,8 +66,15 @@ public class GameStage extends Stage {
         for (Obstacle obstacle : obstacles)
             obstacle.move(delta, speed);
 
-        for (Obstacle obstacle : toRemove)
+        for (Obstacle obstacle : ObstaclesToRemove)
             obstacle.move(delta, speed);
+
+        for (Coin coin : coins)
+            coin.move(speed);
+
+        for (Coin coin : coinsToRemove)
+            coin.move(speed);
+
 
         if(collisionDetector()) {
             //++collisionCounter;
@@ -65,9 +82,14 @@ public class GameStage extends Stage {
         }
 
         if(passedObstacle(obstacles.peek())) {
+            makeCoin();
             Obstacle peek = obstacles.peek();
             Obstacle obstacle = mapGenerator.getObstacle((int) peek.getY(), obstacles.size());
             addObstacle(obstacle);
+        }
+
+        if(collisionWithCoinDetector()) {
+            score++;
         }
 
 
@@ -90,16 +112,22 @@ public class GameStage extends Stage {
         boolean passed = player.getY() > obstacle.getY() + obstacle.getHeight();
 
         if (passed)
-            toRemove.add(obstacles.remove());
+            ObstaclesToRemove.add(obstacles.remove());
 
         return passed;
     }
 
 
     private void removeObstacle() {
-        if (toRemove.size() > 2)
-            toRemove.removeFirst();
+        if (ObstaclesToRemove.size() > 2)
+            ObstaclesToRemove.removeFirst();
     }
+
+    public void addCoin(Coin coin) {
+        super.addActor(coin);
+        coins.add(coin);
+    }
+
 
     private void addObstacle(Obstacle actor) {
         addActor(actor);
@@ -116,13 +144,13 @@ public class GameStage extends Stage {
     public boolean collisionDetector() {
         boolean collision = collisionWithObstacle(obstacles.peek());
 
-        if (collision == true)
+        if (collision)
             return true;
 
-        if (toRemove.isEmpty())
+        if (ObstaclesToRemove.isEmpty())
             return false;
 
-        return collisionWithObstacle(toRemove.getLast());
+        return collisionWithObstacle(ObstaclesToRemove.getLast());
     }
 
 
@@ -166,6 +194,38 @@ public class GameStage extends Stage {
         }
 
         return vertices;
+    }
+
+
+    private boolean collisionWithCoinDetector() {
+        boolean collision = false;
+        if(!coins.isEmpty())
+            collision = collisionWithCoin(coins.peek());
+
+        if (collision) {
+            // then increase score
+            // or amount of money
+            Gdx.app.log("collision", "collision DETECTED!!!");
+            coins.remove();
+            return true;
+        }
+
+        if (coinsToRemove.isEmpty())
+            return false;
+
+        return collisionWithCoin(coinsToRemove.getLast());
+    }
+
+
+    private boolean collisionWithCoin(Coin coin) {
+        return player.getShape().overlaps(coin.getShape());
+    }
+
+
+
+    /////////////////////////
+    private void makeCoin () {
+        addCoin(new Coin(RollingRocks.WORLD_WIDTH/2, 1500, new Texture("coin.png")));
     }
 
 }

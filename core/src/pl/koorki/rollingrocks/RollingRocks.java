@@ -23,6 +23,7 @@ public class RollingRocks extends Game {
 	ExtendViewport viewport;
 
 
+
 	
 	@Override
 	public void create () {
@@ -36,6 +37,7 @@ public class RollingRocks extends Game {
 		WORLD_HEIGHT = (int) viewport.getWorldHeight();
 		Gdx.input.setInputProcessor(stage);
 		stage.loadMap();
+
 	}
 
 	@Override
