@@ -28,13 +28,15 @@ public class Player extends Actor {
     private ShapeRenderer renderer = new ShapeRenderer();
 
 
-
+    private final float touchBoundsScale = 3.5f;
+    
 
 
     public Player(int x, int y, Texture texture) {
         int radius = texture.getWidth() / 2;
         circle = new Circle(x, y, radius);
-        super.setBounds(x - circle.radius, y - circle.radius, 2 * circle.radius, 2 * circle.radius);
+        float length = touchBoundsScale*circle.radius;
+        super.setBounds(x - length, y - length, 2*length, 2*length);
         this.texture = texture;
         this.sprite = new Sprite(texture);
         setPosition(x, y);
@@ -109,20 +111,35 @@ public class Player extends Actor {
 
     @Override
     public void setPosition(float x, float y) {
-        super.setPosition(x - circle.radius, y - circle.radius);
+        super.setPosition(x - touchBoundsScale*circle.radius, y - touchBoundsScale*circle.radius);
         sprite.setPosition(x - circle.radius, y - circle.radius);
         circle.setPosition(x, y);
     }
 
 
     private void collisionWithFrames() {
-        if (getX() <= 0)
+        if (getSpriteX() <= 0)
             speed.x = speed.x > 0 ? speed.x : -speed.x;
-        else if (getX() + getWidth() >= RollingRocks.WORLD_WIDTH)
+        else if (getSpriteX() + getSpriteWidth() >= RollingRocks.WORLD_WIDTH)
             speed.x = speed.x < 0 ? speed.x : -speed.x;
 
-        if (getY() <= 0)
+        if (getSpriteY() <= 0)
             speed.y = speed.y > 0 ? speed.y : -speed.y;
+    }
+
+
+    private float getSpriteX() {
+        return sprite.getX();
+    }
+
+
+    private float getSpriteY() {
+        return sprite.getY();
+    }
+
+
+    private float getSpriteWidth() {
+        return sprite.getWidth();
     }
 
 

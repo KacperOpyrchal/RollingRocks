@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class MapGenerator {
 
     private final int distance = 500;
-    public static final int yPlayer = 400;
+    public static final int yPlayer = 450;
     private int currentY = yPlayer - distance/2;
     private ObstacleGenerator obstacleGenerator;
 
