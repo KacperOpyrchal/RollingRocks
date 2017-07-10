@@ -1,6 +1,7 @@
 package pl.koorki.rollingrocks;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Random;
 
@@ -17,16 +18,29 @@ public class MapGenerator {
     private ObstacleGenerator obstacleGenerator;
     private Random random;
     private int height;
-    private int heightOfCoin = 40;
-    private int safeDistance = 10;
+    private int heightOfCoin;
+    private int safeDistance = 20;
 
-    Texture texture = new Texture("coin.png");
+    TextureRegion[] coinAnimation;
 
 
     public MapGenerator() {
         obstacleGenerator = new ObstacleGenerator();
         height = obstacleGenerator.getHeight();
         random = obstacleGenerator.getRandom();
+        makeTextureRegionCoin();
+    }
+
+
+
+    private void makeTextureRegionCoin() {
+        coinAnimation = new TextureRegion[12];
+        Texture coinSpriteSheet = new Texture("coin_spritesheet.png");
+        TextureRegion[][] coinSheet = TextureRegion.split(coinSpriteSheet, coinSpriteSheet.getWidth()/6, coinSpriteSheet.getHeight()/2);
+        for (int i = 0; i < 2; ++i)
+            for (int j = 0; j < 6; ++j)
+                coinAnimation[6*i + j] = coinSheet[i][j];
+        heightOfCoin = coinAnimation[0].getRegionHeight();
     }
 
 
@@ -44,15 +58,10 @@ public class MapGenerator {
 
 
     public Coin[] getCoins() {
-        Y += height;
         Coin[] array = new Coin[5];
         for (int i = 0; i < 5; ++i) {
             Y += distance;
-            if (random.nextBoolean()) {
-                int rnd = random.nextInt(distance - height - heightOfCoin - 2 * safeDistance);
-                int x = random.nextInt(RollingRocks.WORLD_WIDTH - heightOfCoin);
-                array[i] = new Coin(x + heightOfCoin/2, Y + rnd + heightOfCoin/2 + safeDistance, texture);
-            }
+            array[i] = getCoin(Y, 1);
         }
         return array;
     }
@@ -67,7 +76,7 @@ public class MapGenerator {
         if (random.nextBoolean()) {
             int rnd = random.nextInt(distance - height - heightOfCoin - 2 * safeDistance);
             int x = random.nextInt(RollingRocks.WORLD_WIDTH - heightOfCoin);
-            coin = new Coin(x + heightOfCoin/2, y * howMuch + rnd + height + heightOfCoin/2 + safeDistance, texture);
+            coin = new Coin(x + heightOfCoin/2, y * howMuch + rnd + height + heightOfCoin/2 + safeDistance, coinAnimation);
         }
         return coin;
     }
