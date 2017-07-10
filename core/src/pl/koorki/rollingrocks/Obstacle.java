@@ -1,16 +1,14 @@
 package pl.koorki.rollingrocks;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Created by marcin on 05.07.17.
  */
 
-public class Obstacle extends Actor {
+public class Obstacle extends MyActor {
 
     private Sprite obstacle;
     private Sprite gap;
@@ -26,10 +24,11 @@ public class Obstacle extends Actor {
     }
 
 
-    public void move(float delta, float ySpeed) {
+    @Override
+    public void move(float delta, float shift) {
         gap.translateX(delta * speed);
 
-        moveY(ySpeed);
+        moveY(shift);
 
         if (gap.getX() <= 0)
             speed = speed > 0 ? speed : -speed;
@@ -52,6 +51,7 @@ public class Obstacle extends Actor {
     }
 
 
+    @Override
     public void draw(Batch batch) {
         obstacle.draw(batch);
         gap.draw(batch);

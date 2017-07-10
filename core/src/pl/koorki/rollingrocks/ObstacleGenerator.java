@@ -112,4 +112,13 @@ public class ObstacleGenerator {
     }
 
 
+    public int getHeight() {
+        return height;
+    }
+
+    public Random getRandom() {
+        return random;
+    }
+
+
 }

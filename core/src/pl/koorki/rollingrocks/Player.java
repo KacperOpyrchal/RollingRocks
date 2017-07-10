@@ -31,6 +31,19 @@ public class Player extends Actor {
     private final float touchBoundsScale = 3.5f;
 
 
+    public void draw(Batch batch) {
+        batch.end();
+
+        renderer.setProjectionMatrix(batch.getProjectionMatrix());
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.setColor(Color.WHITE);
+
+        renderer.rectLine(circle.x, circle.y, circle.x + line.x, circle.y + line.y, 3);
+        renderer.end();
+
+        batch.begin();
+        sprite.draw(batch);
+    }
 
     public Player(int x, int y, Texture texture) {
         int radius = texture.getWidth() / 2;
@@ -71,20 +84,6 @@ public class Player extends Actor {
         });
     }
 
-
-    public void draw(Batch batch) {
-        batch.end();
-
-        renderer.setProjectionMatrix(batch.getProjectionMatrix());
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.WHITE);
-
-        renderer.rectLine(circle.x, circle.y, circle.x + line.x, circle.y + line.y, 3);
-        renderer.end();
-
-        batch.begin();
-        sprite.draw(batch);
-    }
 
 
     public float move(float delta) {
@@ -128,12 +127,12 @@ public class Player extends Actor {
     }
 
 
-    private float getSpriteX() {
+    public float getSpriteX() {
         return sprite.getX();
     }
 
 
-    private float getSpriteY() {
+    public float getSpriteY() {
         return sprite.getY();
     }
 

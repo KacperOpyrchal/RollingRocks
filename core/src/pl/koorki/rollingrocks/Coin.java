@@ -3,13 +3,12 @@ package pl.koorki.rollingrocks;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Created by marcin on 06.07.17.
  */
 
-public class Coin extends Actor {
+public class Coin extends MyActor {
 
     private Texture texture;
     private Circle circle;
@@ -23,7 +22,8 @@ public class Coin extends Actor {
     }
 
 
-    public void move(float y) {
+    @Override
+    public void move(float delta, float y) {
         setY(getY() - y);
         circle.setY(circle.y - y);
     }
@@ -37,4 +37,5 @@ public class Coin extends Actor {
     public void draw(Batch batch) {
         batch.draw(texture, getX(), getY());
     }
+
 }

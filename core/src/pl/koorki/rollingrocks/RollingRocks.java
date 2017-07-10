@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class RollingRocks extends Game {
 	SpriteBatch batch;
+	//GameStageOldVersion stage;
 	GameStage stage;
 
 	static int WIDTH = 720;
@@ -23,7 +24,9 @@ public class RollingRocks extends Game {
 	ExtendViewport viewport;
 
 
-
+///////////////////////////////////////
+	GameManager gameManager;
+///////////////////////////////////////
 	
 	@Override
 	public void create () {
@@ -32,18 +35,20 @@ public class RollingRocks extends Game {
 		camera = new OrthographicCamera(WIDTH, WIDTH * ASPECT_RATIO);
 		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 		viewport = new ExtendViewport(WIDTH, HEIGHT, camera);
+		//stage = new GameStageOldVersion(viewport, batch);
 		stage = new GameStage(viewport, batch);
 		WORLD_WIDTH = (int) viewport.getWorldWidth();
 		WORLD_HEIGHT = (int) viewport.getWorldHeight();
+		gameManager = new GameManager(stage);
 		Gdx.input.setInputProcessor(stage);
-		stage.loadMap();
+		//stage.loadMap();
 
 	}
 
 	@Override
 	public void render () {
 
-		stage.act();
+		gameManager.update();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		stage.draw();
