@@ -1,12 +1,7 @@
 package pl.koorki.rollingrocks;
 
 
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-
 import java.util.LinkedList;
 
 /**
@@ -15,14 +10,16 @@ import java.util.LinkedList;
 
 public class GameManager {
 
-  //  private GameStageOldVersion stage;
     private GameStage stage;
-    private LinkedList<Obstacle> obstacles;
-    private LinkedList<Obstacle> obstaclesToRemove;
-    private LinkedList<Coin> coins;
-    private LinkedList<Coin> coinsToRemove;
-    private Player player;
+    public LinkedList<Obstacle> obstacles;
+    public LinkedList<Obstacle> obstaclesToRemove;
+    public LinkedList<Coin> coins;
+    public LinkedList<Coin> coinsToRemove;
+    public Player player;
     private MapGenerator generator;
+    private CollisionDetector detector;
+
+    Obstacle rcnHitObst = null;
 
 
     public GameManager (GameStage stage) {
@@ -33,6 +30,29 @@ public class GameManager {
         coinsToRemove = new LinkedList<Coin>();
         generator = new MapGenerator();
         loadMap();
+        detector = new CollisionDetector(this);
+    }
+
+
+    private void collisionHandling() {
+        Obstacle obstacle = detector.collisionWithObstacle();
+        if (obstacle != null) {
+            if (obstacle != rcnHitObst)
+                Gdx.app.log("Collision", "Collision with OBSTACLE detected!");
+            rcnHitObst = obstacle;
+            // then handle end of game
+            // or decrement amount of lives
+        }
+
+        Coin coin = detector.collisionWithCoin();
+        if (coin != null) {
+            Gdx.app.log("Collision", "Collision with COIN detected!");
+            // increase money
+            if (!coins.isEmpty() && coin == coins.peek())
+                coins.removeFirst().remove();
+            if (!coinsToRemove.isEmpty() && coin == coinsToRemove.getLast())
+                coinsToRemove.removeLast().remove();
+        }
     }
 
 
@@ -65,25 +85,10 @@ public class GameManager {
 
     public void update() {
         stage.act();
-
         passedObjects();
-
-        if (collisionDetector()) {
-            // then game_over screen
-            // or something else like amount of lives is decrementing
-            Gdx.app.log("Collision", "Collision Detected");
-        }
-
-        if (collisionWithCoinDetector()) {
-            // then increase amount of money
-            Gdx.app.log("Collision", "Collision with coin!");
-
-        }
-
         removeUnnecessaryObjects();
+        collisionHandling();
     }
-
-
 
     private void addObstacle() {
         Obstacle obstacle = generator.getObstacle((int) obstacles.peek().getY(), obstacles.size());
@@ -99,15 +104,6 @@ public class GameManager {
         }
     }
 
-
-
-
-
-
-
-
-    /////////////////////////////////////////
-
     private void passedObjects() {
         if (!obstacles.isEmpty() && passedObject(obstacles.getFirst())) {
             obstaclesToRemove.add(obstacles.removeFirst());
@@ -120,39 +116,6 @@ public class GameManager {
             coinsToRemove.add(coins.removeFirst());
     }
 
-    private boolean collisionDetector() {
-        boolean collision = collisionWithObstacle(obstacles.peek());
-
-        if (collision)
-            return true;
-
-        if (obstaclesToRemove.isEmpty())
-            return false;
-
-        return collisionWithObstacle(obstaclesToRemove.getLast());
-    }
-
-    private boolean collisionWithCoinDetector() {
-        boolean collision = false;
-        if(!coins.isEmpty())
-            collision = collisionWithCoin(coins.peek());
-
-        if (collision) {
-            coins.removeFirst().remove();
-            return true;
-        }
-
-        if (coinsToRemove.isEmpty())
-            return false;
-
-        collision = collisionWithCoin(coinsToRemove.getLast());
-
-        if (collision)
-            coinsToRemove.removeLast().remove();
-
-        return collision;
-    }
-
     private boolean passedObject(MyActor object) {
         return player.getSpriteY() > object.getY() + object.getHeight();
     }
@@ -163,51 +126,6 @@ public class GameManager {
 
         if (obstaclesToRemove.size() > 2)
             obstaclesToRemove.removeFirst().remove();
-    }
-
-    private boolean collisionWithCoin(Coin coin) {
-        return player.getShape().overlaps(coin.getShape());
-    }
-
-    private boolean collisionWithObstacle(Obstacle obstacle) {
-        if (obstacle == null)
-            return false;
-
-        Rectangle obstacleBounds = obstacle.getObstacleBounds();
-        Rectangle playerBounds = player.getBounds();
-
-        if (!playerBounds.overlaps(obstacleBounds))
-            return false;
-
-        Rectangle gapBounds = obstacle.getGapBounds();
-
-        if (player.getX() > gapBounds.getX() && player.getX() + player.getWidth() < gapBounds.getX() + gapBounds.getWidth())
-            return false;
-
-        if (player.getX() + player.getWidth()/2 <= gapBounds.getX() || player.getX() + player.getWidth()/2 >= gapBounds.getX() + gapBounds.getWidth())
-            return true;
-
-        Vector2[] gapVertices = getVertices(gapBounds);
-        Circle circle = player.getShape();
-        boolean collision = false;
-
-        for (Vector2 vertex : gapVertices)
-            collision = collision || circle.contains(vertex);
-
-        return collision;
-    }
-
-    private Vector2[] getVertices(Rectangle r) {
-        Vector2[] vertices = new Vector2[4];
-        int it = 0;
-        for (int i = 0; i < 2; ++i) {
-            for (int j = 0; j < 2; ++j) {
-                vertices[it] = new Vector2(r.getX() + i*r.getWidth(), r.getY() + j*r.getHeight());
-                ++it;
-            }
-        }
-
-        return vertices;
     }
 
 }

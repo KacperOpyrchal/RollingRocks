@@ -52,6 +52,4 @@ public class GameStage extends Stage {
     }
 
 
-
-
 }

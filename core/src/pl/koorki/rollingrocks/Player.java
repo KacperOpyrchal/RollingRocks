@@ -20,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 public class Player extends Actor {
 
     private Circle circle;
-    private Texture texture;
     private Sprite sprite;
     private Vector2 speed = new Vector2(0, 0);
     private Vector2 line = new Vector2(0, 0);
@@ -50,7 +49,6 @@ public class Player extends Actor {
         circle = new Circle(x, y, radius);
         float length = touchBoundsScale*circle.radius;
         super.setBounds(x - length, y - length, 2*length, 2*length);
-        this.texture = texture;
         this.sprite = new Sprite(texture);
         setPosition(x, y);
         setTouchable(Touchable.enabled);
@@ -62,7 +60,6 @@ public class Player extends Actor {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
-
 
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer) {

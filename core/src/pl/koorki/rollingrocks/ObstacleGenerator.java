@@ -36,7 +36,6 @@ public class ObstacleGenerator {
             textures[i] = makeTexture(pixmaps[i], i);
 
         gapTexture = makeGapTexture(gapPixmap);
-
         builder = new ObstacleBuilder();
     }
 
