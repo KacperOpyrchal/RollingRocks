@@ -115,13 +115,15 @@ public class Player extends Actor {
 
     private void collisionWithFrames() {
         if (getSpriteX() <= 0)
-            speed.x = speed.x > 0 ? speed.x : -speed.x;
+            speed.x = Math.abs(speed.x);
         else if (getSpriteX() + getSpriteWidth() >= RollingRocks.WORLD_WIDTH)
-            speed.x = speed.x < 0 ? speed.x : -speed.x;
+            speed.x = -Math.abs(speed.x);
 
         if (getSpriteY() <= 0)
-            speed.y = speed.y > 0 ? speed.y : -speed.y;
+            speed.y = Math.abs(speed.y);
     }
+
+
 
 
     public float getSpriteX() {

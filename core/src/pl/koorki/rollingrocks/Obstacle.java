@@ -31,9 +31,9 @@ public class Obstacle extends MyActor {
         moveY(shift);
 
         if (gap.getX() <= 0)
-            speed = speed > 0 ? speed : -speed;
+            speed = Math.abs(speed);
         else if (gap.getX() + gap.getWidth() >= RollingRocks.WORLD_WIDTH)
-            speed = speed < 0 ? speed : -speed;
+            speed = -Math.abs(speed);
     }
 
 
