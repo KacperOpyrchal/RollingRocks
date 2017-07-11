@@ -25,8 +25,8 @@ public class CollisionDetector {
         if (manager.obstaclesToRemove.isEmpty())
             return null;
 
-        if (isCollision(manager.obstaclesToRemove.peek()))
-            return manager.obstaclesToRemove.peek();
+        if (isCollision(manager.obstaclesToRemove.getLast()))
+            return manager.obstaclesToRemove.getLast();
 
         return null;
     }
@@ -35,8 +35,6 @@ public class CollisionDetector {
         if (!manager.coins.isEmpty())
             if (isCollision(manager.coins.peek()))
                 return manager.coins.peek();
-
-        /// TODO Collision with the penultimate
 
         if (manager.coinsToRemove.size() >= 2) {
             int i = manager.coinsToRemove.size() - 2;

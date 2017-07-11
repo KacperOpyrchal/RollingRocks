@@ -19,11 +19,13 @@ public class GameManager {
     private MapGenerator generator;
     private CollisionDetector detector;
 
-    Obstacle rcnHitObst = null;
+    public Obstacle rcnHitObst = null;
+    private HUD hud;
 
 
-    public GameManager (GameStage stage) {
+    public GameManager (GameStage stage, HUD hud) {
         this.stage = stage;
+        this.hud = hud;
         obstacles = new LinkedList<Obstacle>();
         obstaclesToRemove = new LinkedList<Obstacle>();
         coins = new LinkedList<Coin>();
@@ -44,6 +46,8 @@ public class GameManager {
             if (obstacle != rcnHitObst)
                 Gdx.app.log("Collision", "Collision with OBSTACLE detected!");
             rcnHitObst = obstacle;
+            //
+            //
             // then handle end of game
             // or decrement amount of lives
         }
@@ -52,7 +56,7 @@ public class GameManager {
     void collision(Coin coin) {
         if (coin != null) {
             Gdx.app.log("Collision", "Collision with COIN detected!");
-            // increase money
+            hud.increaseCoins();
 
             if (!coins.isEmpty() && coin == coins.peek())
                 coins.removeFirst();
@@ -117,6 +121,7 @@ public class GameManager {
             addObstacle();
             addCoin();
             // increase score
+            hud.increaseScore();
         }
 
         if (!coins.isEmpty() && passedObject(coins.getFirst()))
