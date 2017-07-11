@@ -13,13 +13,13 @@ import java.util.Random;
 public class ObstacleGenerator {
 
     private ObstacleBuilder builder;
-    private Random random = new Random();
+    private Random random;
     private int width = RollingRocks.WORLD_WIDTH;
-    private int height = 30;
+    private int height;
     private int colors = 4;
 
-    private int minSpeed = 50;
-    private int rndSpeed = 90;
+    private int minSpeed = 70;
+    private int rndSpeed = 100;
 
     private int minGapWidth = 200;
     private int rndGapWidth = 100;
@@ -31,7 +31,9 @@ public class ObstacleGenerator {
     private Pixmap gapPixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 
 
-    public ObstacleGenerator() {
+    public ObstacleGenerator(Random random, int height) {
+        this.random = random;
+        this.height = height;
         for (int i = 0; i < colors; ++i)
             textures[i] = makeTexture(pixmaps[i], i);
 
@@ -108,15 +110,6 @@ public class ObstacleGenerator {
 
         gapPixmap.dispose();
         gapTexture.dispose();
-    }
-
-
-    public int getHeight() {
-        return height;
-    }
-
-    public Random getRandom() {
-        return random;
     }
 
 

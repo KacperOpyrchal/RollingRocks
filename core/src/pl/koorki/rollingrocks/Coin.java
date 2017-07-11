@@ -18,15 +18,13 @@ public class Coin extends MyActor {
     private float time;
 
 
-    public Coin(int x, int y, TextureRegion[] spritesheet) {
-        int radius = spritesheet[0].getRegionHeight()/2;
-        Gdx.app.log("radius", "Radius = " + radius);
+    public Coin(int x, int y, int radius, Animation<TextureRegion> animation) {
+        this.animation = animation;
         super.setBounds(x - radius, y - radius, 2*radius, 2*radius);
-        super.setPosition(x - radius, y - radius);
         circle = new Circle(x, y, radius);
-        animation = new Animation<TextureRegion>(0.05f, spritesheet);
         time = 0;
     }
+
 
 
     @Override

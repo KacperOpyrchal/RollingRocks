@@ -43,7 +43,6 @@ public class GameStage extends Stage {
             if (!(actor instanceof Player))
                 ((MyActor) actor).move(delta, shift);
 
-        player.move(delta);
     }
 
     public void addPlayer(Player player) {

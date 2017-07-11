@@ -46,7 +46,12 @@ public class RollingRocks extends Game {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		super.render();
 	}
-	
+
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+	}
+
 	@Override
 	public void dispose () {
 		batch.dispose();

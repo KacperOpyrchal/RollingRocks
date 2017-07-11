@@ -36,9 +36,17 @@ public class CollisionDetector {
             if (isCollision(manager.coins.peek()))
                 return manager.coins.peek();
 
+        /// TODO Collision with the penultimate
+
+        if (manager.coinsToRemove.size() >= 2) {
+            int i = manager.coinsToRemove.size() - 2;
+            if (isCollision(manager.coinsToRemove.get(i)))
+                return manager.coinsToRemove.get(i);
+        }
+
         if (!manager.coinsToRemove.isEmpty())
-            if (isCollision(manager.coinsToRemove.peek()))
-                return manager.coinsToRemove.peek();
+            if (isCollision(manager.coinsToRemove.getLast()))
+                return manager.coinsToRemove.getLast();
 
         return null;
     }

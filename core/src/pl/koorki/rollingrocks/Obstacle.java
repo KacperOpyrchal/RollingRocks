@@ -69,6 +69,5 @@ public class Obstacle extends MyActor {
 
 
     public void dispose() {
-
     }
 }

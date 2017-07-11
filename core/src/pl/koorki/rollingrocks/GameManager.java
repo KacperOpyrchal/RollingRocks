@@ -35,7 +35,11 @@ public class GameManager {
 
 
     private void collisionHandling() {
-        Obstacle obstacle = detector.collisionWithObstacle();
+        collision(detector.collisionWithObstacle());
+        collision(detector.collisionWithCoin());
+    }
+
+    void collision(Obstacle obstacle) {
         if (obstacle != null) {
             if (obstacle != rcnHitObst)
                 Gdx.app.log("Collision", "Collision with OBSTACLE detected!");
@@ -43,15 +47,18 @@ public class GameManager {
             // then handle end of game
             // or decrement amount of lives
         }
+    }
 
-        Coin coin = detector.collisionWithCoin();
+    void collision(Coin coin) {
         if (coin != null) {
             Gdx.app.log("Collision", "Collision with COIN detected!");
             // increase money
+
             if (!coins.isEmpty() && coin == coins.peek())
-                coins.removeFirst().remove();
-            if (!coinsToRemove.isEmpty() && coin == coinsToRemove.getLast())
-                coinsToRemove.removeLast().remove();
+                coins.removeFirst();
+            else
+                coinsToRemove.remove(coin);
+            coin.remove();
         }
     }
 
@@ -126,6 +133,10 @@ public class GameManager {
 
         if (obstaclesToRemove.size() > 2)
             obstaclesToRemove.removeFirst().remove();
+    }
+
+    public void dispose() {
+        generator.dispose();
     }
 
 }

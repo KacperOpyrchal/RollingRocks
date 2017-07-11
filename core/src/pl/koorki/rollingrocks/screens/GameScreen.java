@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.log("show", "Now i know when it works");
+
     }
 
     @Override
@@ -60,5 +60,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+
     }
 }
