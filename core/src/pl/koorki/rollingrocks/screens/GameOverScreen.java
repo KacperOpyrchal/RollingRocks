@@ -1,13 +1,13 @@
 package pl.koorki.rollingrocks.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 
-import pl.koorki.rollingrocks.GameStage;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import pl.koorki.rollingrocks.RollingRocks;
+import pl.koorki.rollingrocks.actors.buttons.Button;
 
 /**
  * Created by marcin on 11.07.17.
@@ -16,52 +16,16 @@ import pl.koorki.rollingrocks.RollingRocks;
 public class GameOverScreen extends InputListener implements Screen  {
 
     final RollingRocks game;
-
+    private Stage stage;
+    private Button playButton;
+    private Texture playBtn = new Texture("play_button.png");
 
     public GameOverScreen(final RollingRocks game) {
         this.game = game;
-        Gdx.input.setInputProcessor(new InputProcessor() {
-            @Override
-            public boolean keyDown(int keycode) {
-                return false;
-            }
-
-            @Override
-            public boolean keyUp(int keycode) {
-                return false;
-            }
-
-            @Override
-            public boolean keyTyped(char character) {
-                return false;
-            }
-
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
-                return false;
-            }
-
-            @Override
-            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                return false;
-            }
-
-            @Override
-            public boolean touchDragged(int screenX, int screenY, int pointer) {
-                return false;
-            }
-
-            @Override
-            public boolean mouseMoved(int screenX, int screenY) {
-                return false;
-            }
-
-            @Override
-            public boolean scrolled(int amount) {
-                return false;
-            }
-        });
+        stage = new Stage(game.viewport, game.batch);
+        playButton = new Button((game.viewport.getWorldWidth() - playBtn.getWidth())/2, (game.viewport.getWorldHeight() - playBtn.getHeight())/2, playBtn, null);
+        stage.addActor(playButton);
+        Gdx.input.setInputProcessor(stage);
     }
 
 
@@ -72,7 +36,11 @@ public class GameOverScreen extends InputListener implements Screen  {
 
     @Override
     public void render(float delta) {
-
+        stage.draw();
+        if (playButton.wasClicked()) {
+            dispose();
+            game.setScreen(new GameScreen(game));
+        }
     }
 
     @Override

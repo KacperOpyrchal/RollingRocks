@@ -42,11 +42,11 @@ public class ObstacleGenerator {
     }
 
 
-    public Obstacle getNewObstacle(int y) {
+    public pl.koorki.rollingrocks.actors.Obstacle getNewObstacle(int y) {
         Sprite gap = makeGapSprite();
         int x = (int) ((width - gap.getWidth()) / 2);
 
-        Obstacle obstacle = builder
+        pl.koorki.rollingrocks.actors.Obstacle obstacle = builder
                 .setX(x)
                 .setY(y)
                 .setSpeed(randSpeed())

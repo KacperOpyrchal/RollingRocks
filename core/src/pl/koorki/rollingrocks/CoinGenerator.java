@@ -31,10 +31,10 @@ public class CoinGenerator {
     }
 
 
-    public Coin getNewCoin(int y) {
-        Coin coin = null;
+    public pl.koorki.rollingrocks.actors.Coin getNewCoin(int y) {
+        pl.koorki.rollingrocks.actors.Coin coin = null;
         if (isCoin())
-            coin = new Coin(randX(), y + randY(), radius, animation);
+            coin = new pl.koorki.rollingrocks.actors.Coin(randX(), y + randY(), radius, animation);
 
         return coin;
     }

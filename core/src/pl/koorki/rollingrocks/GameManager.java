@@ -2,6 +2,7 @@ package pl.koorki.rollingrocks;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import java.util.LinkedList;
 
 /**
@@ -10,26 +11,28 @@ import java.util.LinkedList;
 
 public class GameManager {
 
-    private GameStage stage;
-    public LinkedList<Obstacle> obstacles;
-    public LinkedList<Obstacle> obstaclesToRemove;
-    public LinkedList<Coin> coins;
-    public LinkedList<Coin> coinsToRemove;
-    public Player player;
+    private pl.koorki.rollingrocks.stages.GameStage stage;
+    public LinkedList<pl.koorki.rollingrocks.actors.Obstacle> obstacles;
+    public LinkedList<pl.koorki.rollingrocks.actors.Obstacle> obstaclesToRemove;
+    public LinkedList<pl.koorki.rollingrocks.actors.Coin> coins;
+    public LinkedList<pl.koorki.rollingrocks.actors.Coin> coinsToRemove;
+    public pl.koorki.rollingrocks.actors.Player player;
     private MapGenerator generator;
     private CollisionDetector detector;
+    private boolean collision = false;
+    private Sound collisionSound;
+    private Sound coinSound;
 
-    public Obstacle rcnHitObst = null;
     private HUD hud;
 
 
-    public GameManager (GameStage stage, HUD hud) {
+    public GameManager (pl.koorki.rollingrocks.stages.GameStage stage, HUD hud) {
         this.stage = stage;
         this.hud = hud;
-        obstacles = new LinkedList<Obstacle>();
-        obstaclesToRemove = new LinkedList<Obstacle>();
-        coins = new LinkedList<Coin>();
-        coinsToRemove = new LinkedList<Coin>();
+        obstacles = new LinkedList<pl.koorki.rollingrocks.actors.Obstacle>();
+        obstaclesToRemove = new LinkedList<pl.koorki.rollingrocks.actors.Obstacle>();
+        coins = new LinkedList<pl.koorki.rollingrocks.actors.Coin>();
+        coinsToRemove = new LinkedList<pl.koorki.rollingrocks.actors.Coin>();
         generator = new MapGenerator();
         loadMap();
         detector = new CollisionDetector(this);
@@ -41,19 +44,17 @@ public class GameManager {
         collision(detector.collisionWithCoin());
     }
 
-    void collision(Obstacle obstacle) {
+    public boolean getCollision() {
+        return collision;
+    }
+
+    void collision(pl.koorki.rollingrocks.actors.Obstacle obstacle) {
         if (obstacle != null) {
-            if (obstacle != rcnHitObst)
-                Gdx.app.log("Collision", "Collision with OBSTACLE detected!");
-            rcnHitObst = obstacle;
-            //
-            //
-            // then handle end of game
-            // or decrement amount of lives
+            collision = true;
         }
     }
 
-    void collision(Coin coin) {
+    void collision(pl.koorki.rollingrocks.actors.Coin coin) {
         if (coin != null) {
             Gdx.app.log("Collision", "Collision with COIN detected!");
             hud.increaseCoins();
@@ -79,14 +80,14 @@ public class GameManager {
     }
 
     private void loadObstacles() {
-        for (Obstacle obstacle : generator.getObstacles()) {
+        for (pl.koorki.rollingrocks.actors.Obstacle obstacle : generator.getObstacles()) {
             obstacles.add(obstacle);
             stage.addActor(obstacle);
         }
     }
 
     private void loadCoins() {
-        for (Coin coin : generator.getCoins()) {
+        for (pl.koorki.rollingrocks.actors.Coin coin : generator.getCoins()) {
             if (coin != null) {
                 coins.add(coin);
                 stage.addActor(coin);
@@ -102,13 +103,13 @@ public class GameManager {
     }
 
     private void addObstacle() {
-        Obstacle obstacle = generator.getObstacle((int) obstacles.peek().getY(), obstacles.size());
+        pl.koorki.rollingrocks.actors.Obstacle obstacle = generator.getObstacle((int) obstacles.peek().getY(), obstacles.size());
         obstacles.add(obstacle);
         stage.addActor(obstacle);
     }
 
     private void addCoin() {
-        Coin coin = generator.getCoin((int) obstacles.peek().getY(), obstacles.size());
+        pl.koorki.rollingrocks.actors.Coin coin = generator.getCoin((int) obstacles.peek().getY(), obstacles.size());
         if (coin != null) {
             coins.add(coin);
             stage.addActor(coin);
@@ -128,7 +129,7 @@ public class GameManager {
             coinsToRemove.add(coins.removeFirst());
     }
 
-    private boolean passedObject(MyActor object) {
+    private boolean passedObject(pl.koorki.rollingrocks.actors.MyActor object) {
         return player.getSpriteY() > object.getY() + object.getHeight();
     }
 

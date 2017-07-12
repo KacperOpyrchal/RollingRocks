@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import pl.koorki.rollingrocks.GameManager;
-import pl.koorki.rollingrocks.GameStage;
+import pl.koorki.rollingrocks.stages.GameStage;
 import pl.koorki.rollingrocks.HUD;
 import pl.koorki.rollingrocks.RollingRocks;
 
@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         manager.update();
-        if (manager.rcnHitObst != null)
+        if (manager.getCollision())
             game.setScreen(new GameOverScreen(game));
         stage.draw();
         hudStage.draw();

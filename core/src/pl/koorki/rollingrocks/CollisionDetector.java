@@ -11,14 +11,14 @@ import com.badlogic.gdx.math.Vector2;
 public class CollisionDetector {
 
     private GameManager manager;
-    private Player player;
+    private pl.koorki.rollingrocks.actors.Player player;
 
     public CollisionDetector(GameManager manager) {
         this.manager = manager;
         player = manager.player;
     }
 
-    public Obstacle collisionWithObstacle() {
+    public pl.koorki.rollingrocks.actors.Obstacle collisionWithObstacle() {
         if (isCollision(manager.obstacles.peek()))
             return manager.obstacles.peek();
 
@@ -31,7 +31,7 @@ public class CollisionDetector {
         return null;
     }
 
-    public Coin collisionWithCoin() {
+    public pl.koorki.rollingrocks.actors.Coin collisionWithCoin() {
         if (!manager.coins.isEmpty())
             if (isCollision(manager.coins.peek()))
                 return manager.coins.peek();
@@ -49,7 +49,7 @@ public class CollisionDetector {
         return null;
     }
 
-    private boolean isCollision(Obstacle obstacle) {
+    private boolean isCollision(pl.koorki.rollingrocks.actors.Obstacle obstacle) {
         Rectangle playerBounds = player.getBounds();
 
         if (!playerBounds.overlaps(obstacle.getObstacleBounds()))
@@ -66,7 +66,7 @@ public class CollisionDetector {
         return containsGapVertex(getVertices(gap), player.getShape());
     }
 
-    private boolean isCollision(Coin coin) {
+    private boolean isCollision(pl.koorki.rollingrocks.actors.Coin coin) {
         return player.getShape().overlaps(coin.getShape());
     }
 

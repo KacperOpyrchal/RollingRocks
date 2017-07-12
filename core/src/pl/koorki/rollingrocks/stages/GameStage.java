@@ -1,4 +1,4 @@
-package pl.koorki.rollingrocks;
+package pl.koorki.rollingrocks.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameStage extends Stage {
 
-    private Player player;
+    private pl.koorki.rollingrocks.actors.Player player;
 
     public GameStage(Viewport viewport, Batch batch) {
         super(viewport, batch);
@@ -26,8 +26,8 @@ public class GameStage extends Stage {
         getBatch().begin();
 
         for (Actor actor : getActors())
-            if (!(actor instanceof Player))
-                ((MyActor) actor).draw(getBatch());
+            if (!(actor instanceof pl.koorki.rollingrocks.actors.Player))
+                ((pl.koorki.rollingrocks.actors.MyActor) actor).draw(getBatch());
 
         player.draw(getBatch());
 
@@ -40,12 +40,12 @@ public class GameStage extends Stage {
         float shift = player.move(delta);
 
         for (Actor actor : getActors())
-            if (!(actor instanceof Player))
-                ((MyActor) actor).move(delta, shift);
+            if (!(actor instanceof pl.koorki.rollingrocks.actors.Player))
+                ((pl.koorki.rollingrocks.actors.MyActor) actor).move(delta, shift);
 
     }
 
-    public void addPlayer(Player player) {
+    public void addPlayer(pl.koorki.rollingrocks.actors.Player player) {
         addActor(player);
         this.player = player;
     }

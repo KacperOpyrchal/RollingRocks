@@ -1,14 +1,16 @@
-package pl.koorki.rollingrocks;
+package pl.koorki.rollingrocks.actors;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
+import pl.koorki.rollingrocks.RollingRocks;
+
 /**
  * Created by marcin on 05.07.17.
  */
 
-public class Obstacle extends MyActor {
+public class Obstacle extends pl.koorki.rollingrocks.actors.MyActor {
 
     private Sprite obstacle;
     private Sprite gap;

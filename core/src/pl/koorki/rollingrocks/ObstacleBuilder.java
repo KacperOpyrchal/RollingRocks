@@ -39,8 +39,8 @@ public class ObstacleBuilder {
         return this;
     }
 
-    public Obstacle build() {
-        return new Obstacle(x, y, speed, obstacle, gap);
+    public pl.koorki.rollingrocks.actors.Obstacle build() {
+        return new pl.koorki.rollingrocks.actors.Obstacle(x, y, speed, obstacle, gap);
     }
 
 }
