@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import java.util.Random;
 
+import pl.koorki.rollingrocks.actors.Obstacle;
+
 /**
  * Created by marcin on 05.07.17.
  */
@@ -42,11 +44,11 @@ public class ObstacleGenerator {
     }
 
 
-    public pl.koorki.rollingrocks.actors.Obstacle getNewObstacle(int y) {
+    public Obstacle getNewObstacle(int y) {
         Sprite gap = makeGapSprite();
         int x = (int) ((width - gap.getWidth()) / 2);
 
-        pl.koorki.rollingrocks.actors.Obstacle obstacle = builder
+        Obstacle obstacle = builder
                 .setX(x)
                 .setY(y)
                 .setSpeed(randSpeed())

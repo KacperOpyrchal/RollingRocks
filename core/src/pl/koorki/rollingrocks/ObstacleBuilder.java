@@ -2,6 +2,8 @@ package pl.koorki.rollingrocks;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import pl.koorki.rollingrocks.actors.Obstacle;
+
 /**
  * Created by marcin on 05.07.17.
  */
@@ -39,8 +41,8 @@ public class ObstacleBuilder {
         return this;
     }
 
-    public pl.koorki.rollingrocks.actors.Obstacle build() {
-        return new pl.koorki.rollingrocks.actors.Obstacle(x, y, speed, obstacle, gap);
+    public Obstacle build() {
+        return new Obstacle(x, y, speed, obstacle, gap);
     }
 
 }

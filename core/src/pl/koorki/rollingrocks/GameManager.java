@@ -5,19 +5,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import java.util.LinkedList;
 
+import pl.koorki.rollingrocks.actors.Coin;
+import pl.koorki.rollingrocks.actors.MyActor;
+import pl.koorki.rollingrocks.actors.Obstacle;
+import pl.koorki.rollingrocks.actors.Player;
+import pl.koorki.rollingrocks.stages.GameStage;
+
 /**
  * Created by marcin on 07.07.17.
  */
 
 public class GameManager {
 
-    private pl.koorki.rollingrocks.stages.GameStage stage;
-    public LinkedList<pl.koorki.rollingrocks.actors.Obstacle> obstacles;
-    public LinkedList<pl.koorki.rollingrocks.actors.Obstacle> obstaclesToRemove;
-    public LinkedList<pl.koorki.rollingrocks.actors.Coin> coins;
-    public LinkedList<pl.koorki.rollingrocks.actors.Coin> coinsToRemove;
-    public pl.koorki.rollingrocks.actors.Player player;
-    private MapGenerator generator;
+    private GameStage stage;
+    public Player player;
+    public LinkedList<Obstacle> obstacles = new LinkedList<Obstacle>();
+    public LinkedList<Obstacle> obstaclesToRemove = new LinkedList<Obstacle>();;
+    public LinkedList<Coin> coins = new LinkedList<Coin>();
+    public LinkedList<Coin> coinsToRemove = new LinkedList<Coin>();
+    private MapGenerator generator = new MapGenerator();
     private CollisionDetector detector;
     private boolean collision = false;
     private Sound collisionSound;
@@ -26,14 +32,9 @@ public class GameManager {
     private HUD hud;
 
 
-    public GameManager (pl.koorki.rollingrocks.stages.GameStage stage, HUD hud) {
+    public GameManager (GameStage stage, HUD hud) {
         this.stage = stage;
         this.hud = hud;
-        obstacles = new LinkedList<pl.koorki.rollingrocks.actors.Obstacle>();
-        obstaclesToRemove = new LinkedList<pl.koorki.rollingrocks.actors.Obstacle>();
-        coins = new LinkedList<pl.koorki.rollingrocks.actors.Coin>();
-        coinsToRemove = new LinkedList<pl.koorki.rollingrocks.actors.Coin>();
-        generator = new MapGenerator();
         loadMap();
         detector = new CollisionDetector(this);
     }
@@ -48,13 +49,13 @@ public class GameManager {
         return collision;
     }
 
-    void collision(pl.koorki.rollingrocks.actors.Obstacle obstacle) {
+    void collision(Obstacle obstacle) {
         if (obstacle != null) {
             collision = true;
         }
     }
 
-    void collision(pl.koorki.rollingrocks.actors.Coin coin) {
+    void collision(Coin coin) {
         if (coin != null) {
             Gdx.app.log("Collision", "Collision with COIN detected!");
             hud.increaseCoins();
@@ -80,14 +81,14 @@ public class GameManager {
     }
 
     private void loadObstacles() {
-        for (pl.koorki.rollingrocks.actors.Obstacle obstacle : generator.getObstacles()) {
+        for (Obstacle obstacle : generator.getObstacles()) {
             obstacles.add(obstacle);
             stage.addActor(obstacle);
         }
     }
 
     private void loadCoins() {
-        for (pl.koorki.rollingrocks.actors.Coin coin : generator.getCoins()) {
+        for (Coin coin : generator.getCoins()) {
             if (coin != null) {
                 coins.add(coin);
                 stage.addActor(coin);
@@ -103,13 +104,13 @@ public class GameManager {
     }
 
     private void addObstacle() {
-        pl.koorki.rollingrocks.actors.Obstacle obstacle = generator.getObstacle((int) obstacles.peek().getY(), obstacles.size());
+        Obstacle obstacle = generator.getObstacle((int) obstacles.peek().getY(), obstacles.size());
         obstacles.add(obstacle);
         stage.addActor(obstacle);
     }
 
     private void addCoin() {
-        pl.koorki.rollingrocks.actors.Coin coin = generator.getCoin((int) obstacles.peek().getY(), obstacles.size());
+        Coin coin = generator.getCoin((int) obstacles.peek().getY(), obstacles.size());
         if (coin != null) {
             coins.add(coin);
             stage.addActor(coin);
@@ -129,7 +130,7 @@ public class GameManager {
             coinsToRemove.add(coins.removeFirst());
     }
 
-    private boolean passedObject(pl.koorki.rollingrocks.actors.MyActor object) {
+    private boolean passedObject(MyActor object) {
         return player.getSpriteY() > object.getY() + object.getHeight();
     }
 

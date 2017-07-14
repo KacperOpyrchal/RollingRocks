@@ -4,6 +4,10 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import pl.koorki.rollingrocks.actors.Coin;
+import pl.koorki.rollingrocks.actors.Obstacle;
+import pl.koorki.rollingrocks.actors.Player;
+
 /**
  * Created by marcin on 10.07.17.
  */
@@ -11,14 +15,14 @@ import com.badlogic.gdx.math.Vector2;
 public class CollisionDetector {
 
     private GameManager manager;
-    private pl.koorki.rollingrocks.actors.Player player;
+    private Player player;
 
     public CollisionDetector(GameManager manager) {
         this.manager = manager;
         player = manager.player;
     }
 
-    public pl.koorki.rollingrocks.actors.Obstacle collisionWithObstacle() {
+    public Obstacle collisionWithObstacle() {
         if (isCollision(manager.obstacles.peek()))
             return manager.obstacles.peek();
 
@@ -31,7 +35,7 @@ public class CollisionDetector {
         return null;
     }
 
-    public pl.koorki.rollingrocks.actors.Coin collisionWithCoin() {
+    public Coin collisionWithCoin() {
         if (!manager.coins.isEmpty())
             if (isCollision(manager.coins.peek()))
                 return manager.coins.peek();
@@ -49,7 +53,7 @@ public class CollisionDetector {
         return null;
     }
 
-    private boolean isCollision(pl.koorki.rollingrocks.actors.Obstacle obstacle) {
+    private boolean isCollision(Obstacle obstacle) {
         Rectangle playerBounds = player.getBounds();
 
         if (!playerBounds.overlaps(obstacle.getObstacleBounds()))
@@ -66,7 +70,7 @@ public class CollisionDetector {
         return containsGapVertex(getVertices(gap), player.getShape());
     }
 
-    private boolean isCollision(pl.koorki.rollingrocks.actors.Coin coin) {
+    private boolean isCollision(Coin coin) {
         return player.getShape().overlaps(coin.getShape());
     }
 

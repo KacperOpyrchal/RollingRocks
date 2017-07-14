@@ -2,6 +2,10 @@ package pl.koorki.rollingrocks;
 
 import java.util.Random;
 
+import pl.koorki.rollingrocks.actors.Coin;
+import pl.koorki.rollingrocks.actors.Obstacle;
+import pl.koorki.rollingrocks.actors.Player;
+
 /**
  * Created by marcin on 07.07.17.
  */
@@ -28,8 +32,8 @@ public class MapGenerator {
 
 
 
-    public pl.koorki.rollingrocks.actors.Obstacle[] getObstacles() {
-        pl.koorki.rollingrocks.actors.Obstacle[] array = new pl.koorki.rollingrocks.actors.Obstacle[5];
+    public Obstacle[] getObstacles() {
+        Obstacle[] array = new Obstacle[5];
 
         for (int i = 0; i < 5; ++i) {
             currentY += distance;
@@ -40,8 +44,8 @@ public class MapGenerator {
     }
 
 
-    public pl.koorki.rollingrocks.actors.Coin[] getCoins() {
-        pl.koorki.rollingrocks.actors.Coin[] array = new pl.koorki.rollingrocks.actors.Coin[5];
+    public Coin[] getCoins() {
+        Coin[] array = new Coin[5];
 
         for (int i = 0; i < 5; ++i) {
             Y += distance;
@@ -51,18 +55,18 @@ public class MapGenerator {
         return array;
     }
 
-    public pl.koorki.rollingrocks.actors.Obstacle getObstacle(int y, int howMuch) {
+    public Obstacle getObstacle(int y, int howMuch) {
         return obstacleGenerator.getNewObstacle(y + distance * howMuch);
     }
 
 
-    public pl.koorki.rollingrocks.actors.Coin getCoin(int y, int howMuch) {
+    public Coin getCoin(int y, int howMuch) {
         return coinGenerator.getNewCoin(y + howMuch*distance);
     }
 
 
-    public pl.koorki.rollingrocks.actors.Player getPlayer() {
-        return new pl.koorki.rollingrocks.actors.Player(RollingRocks.WORLD_WIDTH/2, yPlayer);
+    public Player getPlayer() {
+        return new Player(RollingRocks.WORLD_WIDTH/2, yPlayer);
     }
 
 

@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.Random;
 
+import pl.koorki.rollingrocks.actors.Coin;
+
 /**
  * Created by marcin on 11.07.17.
  */
@@ -31,10 +33,10 @@ public class CoinGenerator {
     }
 
 
-    public pl.koorki.rollingrocks.actors.Coin getNewCoin(int y) {
-        pl.koorki.rollingrocks.actors.Coin coin = null;
+    public Coin getNewCoin(int y) {
+        Coin coin = null;
         if (isCoin())
-            coin = new pl.koorki.rollingrocks.actors.Coin(randX(), y + randY(), radius, animation);
+            coin = new Coin(randX(), y + randY(), radius, animation);
 
         return coin;
     }
